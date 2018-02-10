@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgnotes"
+    tools:context="com.example.bordia98.notes.writing">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbarnotes"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffff00"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/my_toolbarnotes"
+        android:textSize="20dp"
+        android:id="@+id/notestitle"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:hint="click to add title"
+        />
+
+    <EditText
+        android:id="@+id/notescontent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/notestitle"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
+</RelativeLayout>
