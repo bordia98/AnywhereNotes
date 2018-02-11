@@ -8,17 +8,17 @@
     tools:context="com.example.bordia98.notes.writing">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbarnotes"
+        android:id="@+id/my_writingnotes"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#ffff00"
+        android:layout_height="60dp"
+        android:background="#f6f500"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/my_toolbarnotes"
+        android:layout_below="@id/my_writingnotes"
         android:textSize="20dp"
         android:id="@+id/notestitle"
         android:textStyle="bold"
@@ -32,6 +32,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/notestitle"
+        android:hint="Add content here "
+        android:gravity="top"
+        android:textAlignment="textStart"
         android:layout_marginTop="17dp"
         android:ems="10"
         android:inputType="textMultiLine" />

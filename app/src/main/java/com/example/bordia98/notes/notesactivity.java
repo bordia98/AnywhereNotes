@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,6 +23,13 @@ public class notesactivity extends AppCompatActivity {
         Toolbar toolbar =(Toolbar)findViewById(R.id.my_toolbar);
         toolbar.setTitle("YOUR NOTES");
         setSupportActionBar(toolbar);
+
+        FirebaseAuth mauth = FirebaseAuth.getInstance();
+        String useremail = mauth.getCurrentUser().getEmail();
+
+        TextView welcome = (TextView)findViewById(R.id.welcomenote);
+        welcome.setText("Welcome , "+ " ...");
+
 
 
     }

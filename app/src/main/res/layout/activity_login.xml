@@ -6,11 +6,31 @@
     android:layout_height="match_parent"
     tools:context="com.example.bordia98.notes.MainActivity"
     android:background="#f6f500">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_signintoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#f6f500"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Sign In"
+            android:gravity = "center"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:id="@+id/toolbar_title" />
+
+    </android.support.v7.widget.Toolbar>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg2"
+        android:layout_below="@id/my_signintoolbar"
         android:orientation="vertical">
 
 
@@ -70,6 +90,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
         <TextView
             android:layout_width="150dp"

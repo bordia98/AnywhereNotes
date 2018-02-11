@@ -7,7 +7,7 @@
     >
 
     <item
-        android:id="@+id/addnote"
+        android:id="@+id/savenote"
         android:layout_width="60dp"
         android:layout_height="30dp"
         android:layout_marginRight="5dp"

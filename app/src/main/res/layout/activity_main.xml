@@ -7,7 +7,27 @@
     tools:context="com.example.bordia98.notes.MainActivity"
     android:background="#f6f500">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_signuptoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#f6f500"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Sign Up"
+            android:gravity = "center"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:id="@+id/toolbar_title" />
+
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
+        android:layout_below="@id/my_signuptoolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg2"
@@ -18,13 +38,13 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textColor="#000000"
-            android:textStyle="bold"
+            android:layout_marginTop="160dp"
             android:text="E-mail ID"
-            android:textSize="20dp"/>
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/emailfield"
@@ -57,12 +77,32 @@
             android:ems="10"
             android:hint="enter password"
             android:inputType="textPassword" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Password"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+        <EditText
+            android:id="@+id/confirmpasswordfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:ems="10"
+            android:hint="Re-enter password"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="130dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="130dp"
             android:background="#ADD8E6"
             android:text="Sign up" />

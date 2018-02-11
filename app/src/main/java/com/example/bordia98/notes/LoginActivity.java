@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Toolbar signin = (Toolbar)findViewById(R.id.my_signintoolbar);
+        setSupportActionBar(signin);
+
         mAuth = FirebaseAuth.getInstance();
         TextView newuser = (TextView) findViewById(R.id.newuser);
         newuser.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +77,12 @@ public class LoginActivity extends AppCompatActivity {
 
         String emailid = email.getText().toString().trim();
         String passwordid = password.getText().toString().trim();
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailid).matches()){
+            email.setError("Enter  a valid email id");
+            email.requestFocus();
+            return;
+        }
 
         mAuth.signInWithEmailAndPassword(emailid,passwordid)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
