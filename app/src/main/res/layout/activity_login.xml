@@ -10,7 +10,7 @@
         android:id="@+id/my_signintoolbar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#f6f500"
+        android:background="#00b0c8"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         >
         <TextView

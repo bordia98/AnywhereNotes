@@ -11,7 +11,7 @@
         android:id="@+id/my_writingnotes"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#f6f500"
+        android:background="#00b0c8"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         />
 
@@ -37,6 +37,7 @@
         android:textAlignment="textStart"
         android:layout_marginTop="17dp"
         android:ems="10"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        tools:ignore="RtlCompat" />
 
 </RelativeLayout>

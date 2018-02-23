@@ -3,34 +3,45 @@ package com.example.bordia98.notes;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class notesactivity extends AppCompatActivity {
+public class notesactivity extends AppCompatActivity  {
 
+        private RecyclerView mynoteslist;
+        private GridLayoutManager mygrid;
+        private DatabaseReference notesdatabase;
+        FirebaseAuth mauth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notesactivity);
 
+        mygrid = new GridLayoutManager (this,3,GridLayoutManager.VERTICAL,false);
 
         Toolbar toolbar =(Toolbar)findViewById(R.id.my_toolbar);
         toolbar.setTitle("YOUR NOTES");
         setSupportActionBar(toolbar);
 
-        FirebaseAuth mauth = FirebaseAuth.getInstance();
-        String useremail = mauth.getCurrentUser().getEmail();
+        mauth = FirebaseAuth.getInstance();
 
-        TextView welcome = (TextView)findViewById(R.id.welcomenote);
-        welcome.setText("Welcome , "+ " ...");
-
-
+        mynoteslist = (RecyclerView)findViewById(R.id.main_noteslist);
+        mynoteslist.setHasFixedSize(true);
+        mynoteslist.setLayoutManager(mygrid);
+        notesdatabase = FirebaseDatabase.getInstance().getReference().child("notes").child(mauth.getCurrentUser().getUid());
 
     }
 
@@ -72,5 +83,54 @@ public class notesactivity extends AppCompatActivity {
         mauth.signOut();
         Intent i = new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseRecyclerAdapter<notemodel,note_view_holder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<notemodel, note_view_holder>(
+
+                        notemodel.class,
+                        R.layout.simple_note_layout,
+                        note_view_holder.class,
+                        notesdatabase
+
+                ) {
+                    @Override
+                    protected void populateViewHolder(final note_view_holder viewHolder, notemodel model, int position) {
+
+                        String noteid = getRef(position).getKey();
+                        Log.d("user",noteid);
+                        notesdatabase.child(noteid).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                String title = dataSnapshot.child("Title").getValue().toString();
+                                String timestamp = dataSnapshot.child("Time").getValue().toString();
+                                Log.d("user",title);
+                                viewHolder.setNoteTitle(title);
+                                viewHolder.setNoteTime(timestamp);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    }
+                };
+
+                mynoteslist.setAdapter(firebaseRecyclerAdapter);
+
+            }
+        });
+
+        th.start();
     }
 }

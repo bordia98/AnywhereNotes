@@ -11,20 +11,17 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#f6f500"
+        android:background="#00b0c8"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         />
 
-    <TextView
-        android:id="@+id/welcomenote"
-        android:layout_marginTop="15dp"
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/my_toolbar"
-        android:textSize="20dp"
-        android:textColor="#000"
-        android:textStyle="italic"
-        android:text="" />
+        android:id="@+id/main_noteslist"
+        android:layout_below="@id/my_toolbar"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
