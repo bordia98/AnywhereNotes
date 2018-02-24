@@ -6,16 +6,15 @@
     android:layout_width="wrap_content"
     android:minWidth="200dp"
     android:background="@drawable/bgnotes"
-    android:layout_height="wrap_content">
+    android:layout_height="150dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/note_card"
         android:background="@drawable/bgnotes"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         app:cardBackgroundColor="@color/colorPrimaryDark"
-
         android:clickable="true"
         android:focusable="true"
         android:maxHeight="128dp"
@@ -23,15 +22,15 @@
         >
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="110dp"
-            android:minWidth="200dp"
+            android:minWidth="150dp"
             android:background="@drawable/bgnotes"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/note_title"
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:textStyle="bold"
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"

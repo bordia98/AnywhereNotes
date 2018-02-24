@@ -1,6 +1,7 @@
 package com.example.bordia98.notes;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class notesactivity extends AppCompatActivity  {
@@ -30,7 +33,7 @@ public class notesactivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notesactivity);
 
-        mygrid = new GridLayoutManager (this,3,GridLayoutManager.VERTICAL,false);
+        mygrid = new GridLayoutManager (this,2,GridLayoutManager.VERTICAL,false);
 
         Toolbar toolbar =(Toolbar)findViewById(R.id.my_toolbar);
         toolbar.setTitle("YOUR NOTES");
@@ -41,6 +44,8 @@ public class notesactivity extends AppCompatActivity  {
         mynoteslist = (RecyclerView)findViewById(R.id.main_noteslist);
         mynoteslist.setHasFixedSize(true);
         mynoteslist.setLayoutManager(mygrid);
+        mynoteslist.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+
         notesdatabase = FirebaseDatabase.getInstance().getReference().child("notes").child(mauth.getCurrentUser().getUid());
 
     }
@@ -89,6 +94,7 @@ public class notesactivity extends AppCompatActivity  {
     public void onStart() {
         super.onStart();
 
+        final Query query = notesdatabase.orderByChild("Time");
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -97,23 +103,34 @@ public class notesactivity extends AppCompatActivity  {
                         notemodel.class,
                         R.layout.simple_note_layout,
                         note_view_holder.class,
-                        notesdatabase
+                        query
 
                 ) {
                     @Override
                     protected void populateViewHolder(final note_view_holder viewHolder, notemodel model, int position) {
 
-                        String noteid = getRef(position).getKey();
+                        final String noteid = getRef(position).getKey();
                         Log.d("user",noteid);
                         notesdatabase.child(noteid).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.hasChild("Title") && dataSnapshot.hasChild("Time")) {
+                                    String title = dataSnapshot.child("Title").getValue().toString();
+                                    String timestamp = dataSnapshot.child("Time").getValue().toString();
+                                    Log.d("user", title);
+                                    viewHolder.setNoteTitle(title);
+                                    gettime to = new gettime();
+                                    viewHolder.setNoteTime(to.gettime(Long.parseLong(timestamp), getApplicationContext()));
 
-                                String title = dataSnapshot.child("Title").getValue().toString();
-                                String timestamp = dataSnapshot.child("Time").getValue().toString();
-                                Log.d("user",title);
-                                viewHolder.setNoteTitle(title);
-                                viewHolder.setNoteTime(timestamp);
+                                    viewHolder.noteCard.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Intent i = new Intent(getApplicationContext(), writing.class);
+                                            i.putExtra("noteid", noteid);
+                                            startActivity(i);
+                                        }
+                                    });
+                                }
                             }
 
                             @Override
@@ -133,4 +150,10 @@ public class notesactivity extends AppCompatActivity  {
 
         th.start();
     }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
 }
