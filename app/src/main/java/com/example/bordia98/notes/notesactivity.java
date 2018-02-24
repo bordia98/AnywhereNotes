@@ -32,22 +32,17 @@ public class notesactivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notesactivity);
-
         mygrid = new GridLayoutManager (this,2,GridLayoutManager.VERTICAL,false);
-
         Toolbar toolbar =(Toolbar)findViewById(R.id.my_toolbar);
         toolbar.setTitle("YOUR NOTES");
         setSupportActionBar(toolbar);
-
         mauth = FirebaseAuth.getInstance();
-
         mynoteslist = (RecyclerView)findViewById(R.id.main_noteslist);
         mynoteslist.setHasFixedSize(true);
         mynoteslist.setLayoutManager(mygrid);
         mynoteslist.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-
         notesdatabase = FirebaseDatabase.getInstance().getReference().child("notes").child(mauth.getCurrentUser().getUid());
-
+        onStart();
     }
 
 
@@ -75,6 +70,24 @@ public class notesactivity extends AppCompatActivity  {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     private void addnote() {

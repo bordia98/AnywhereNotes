@@ -101,7 +101,12 @@ public class writing extends AppCompatActivity {
                 return true;
             }
             case R.id.deletenote:{
-                delete();
+                if(isExist){
+                delete();}
+                else{
+                    Toast.makeText(getApplicationContext(),"Nothing to delete",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 return true;
             }
             default:
