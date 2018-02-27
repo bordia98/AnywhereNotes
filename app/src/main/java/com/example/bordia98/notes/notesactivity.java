@@ -1,5 +1,6 @@
 package com.example.bordia98.notes;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
@@ -22,19 +23,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import static java.lang.Thread.sleep;
+
 public class notesactivity extends AppCompatActivity  {
 
         private RecyclerView mynoteslist;
         private GridLayoutManager mygrid;
         private DatabaseReference notesdatabase;
         FirebaseAuth mauth;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finishAffinity();
-        System.exit(0);
-    }
+        int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +47,7 @@ public class notesactivity extends AppCompatActivity  {
         mynoteslist.setLayoutManager(mygrid);
         mynoteslist.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         notesdatabase = FirebaseDatabase.getInstance().getReference().child("notes").child(mauth.getCurrentUser().getUid());
+
         onStart();
     }
 
@@ -58,6 +56,13 @@ public class notesactivity extends AppCompatActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menunotes,menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        System.exit(0);
     }
 
     @Override
@@ -71,7 +76,8 @@ public class notesactivity extends AppCompatActivity  {
                 return true;
             }
             case R.id.addnote:{
-                addnote();
+                if (flag!=1)
+                    addnote();
                 return true;
             }
             default:
@@ -80,23 +86,6 @@ public class notesactivity extends AppCompatActivity  {
 
     }
 
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 
     private void addnote() {
         Intent i = new Intent(getApplicationContext(),writing.class);
@@ -164,12 +153,15 @@ public class notesactivity extends AppCompatActivity  {
                     }
                 };
 
-                mynoteslist.setAdapter(firebaseRecyclerAdapter);
 
+                mynoteslist.setAdapter(firebaseRecyclerAdapter);
             }
         });
 
         th.start();
+
+
+
     }
 
     private int dpToPx(int dp) {

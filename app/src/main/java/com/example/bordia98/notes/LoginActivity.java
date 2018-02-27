@@ -36,12 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar pgbar;
     private FirebaseAuth mAuth;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finishAffinity();
-        System.exit(0);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +75,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        System.exit(0);
     }
 
     private void logintheuser() {

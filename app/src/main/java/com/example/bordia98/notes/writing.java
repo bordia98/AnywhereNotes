@@ -64,9 +64,8 @@ public class writing extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    public void onBackPressed() {
+        super.onBackPressed();
         Intent i = new Intent(getApplicationContext(),notesactivity.class);
         startActivity(i);
     }

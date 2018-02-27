@@ -49,6 +49,13 @@ public class Passwordreset extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(i);
+    }
+
     private void sendresetlink() {
         String email = emailfield.getText().toString().trim();
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
