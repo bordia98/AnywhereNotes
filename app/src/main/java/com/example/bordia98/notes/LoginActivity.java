@@ -1,6 +1,8 @@
 package com.example.bordia98.notes;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +35,14 @@ public class LoginActivity extends AppCompatActivity {
     EditText email,password;
     ProgressBar pgbar;
     private FirebaseAuth mAuth;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finishAffinity();
+        System.exit(0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,27 +88,34 @@ public class LoginActivity extends AppCompatActivity {
         String emailid = email.getText().toString().trim();
         String passwordid = password.getText().toString().trim();
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailid).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailid).matches()) {
             email.setError("Enter  a valid email id");
             email.requestFocus();
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(emailid,passwordid)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Intent i = new Intent(getApplicationContext(),notesactivity.class);
-                            startActivity(i);
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            mAuth.signInWithEmailAndPassword(emailid, passwordid)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Intent i = new Intent(getApplicationContext(), notesactivity.class);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Please check your credentials", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(LoginActivity.this, "Please check your credentials", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
 
 
+        } else {
+                Toast.makeText(getApplicationContext(),"NO Internet Access",Toast.LENGTH_SHORT).show();
+        }
     }
 }

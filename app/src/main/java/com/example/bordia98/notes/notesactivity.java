@@ -28,6 +28,14 @@ public class notesactivity extends AppCompatActivity  {
         private GridLayoutManager mygrid;
         private DatabaseReference notesdatabase;
         FirebaseAuth mauth;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finishAffinity();
+        System.exit(0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

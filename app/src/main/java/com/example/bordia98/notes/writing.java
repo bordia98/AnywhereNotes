@@ -63,6 +63,14 @@ public class writing extends AppCompatActivity {
         placedata();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Intent i = new Intent(getApplicationContext(),notesactivity.class);
+        startActivity(i);
+    }
+
     private void placedata() {
 
         if(isExist){
@@ -105,7 +113,9 @@ public class writing extends AppCompatActivity {
                 delete();}
                 else{
                     Toast.makeText(getApplicationContext(),"Nothing to delete",Toast.LENGTH_SHORT).show();
-                    finish();
+                    Intent i = new Intent(getApplicationContext(),notesactivity.class);
+                    startActivity(i);
+                    //finish();
                 }
                 return true;
             }
@@ -125,7 +135,11 @@ public class writing extends AppCompatActivity {
                         Log.d("user","deleted successfully");
                         noteid="";
                         Toast.makeText(getApplicationContext(), "Note Deleted", Toast.LENGTH_SHORT).show();
-                        finish();
+
+                        Intent i = new Intent(getApplicationContext(),notesactivity.class);
+                        startActivity(i);
+
+                        //finish();
                     } else {
                         Log.e("NewNoteActivity", task.getException().toString());
                         Toast.makeText(getApplicationContext(), "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
