@@ -1,6 +1,7 @@
 package com.example.bordia98.notes;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -41,13 +44,13 @@ public class notesactivity extends AppCompatActivity  {
         Toolbar toolbar =(Toolbar)findViewById(R.id.my_toolbar);
         toolbar.setTitle("YOUR NOTES");
         setSupportActionBar(toolbar);
+
         mauth = FirebaseAuth.getInstance();
         mynoteslist = (RecyclerView)findViewById(R.id.main_noteslist);
         mynoteslist.setHasFixedSize(true);
         mynoteslist.setLayoutManager(mygrid);
         mynoteslist.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         notesdatabase = FirebaseDatabase.getInstance().getReference().child("notes").child(mauth.getCurrentUser().getUid());
-
         onStart();
     }
 
@@ -101,6 +104,12 @@ public class notesactivity extends AppCompatActivity  {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        onStart();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -118,7 +127,6 @@ public class notesactivity extends AppCompatActivity  {
                 ) {
                     @Override
                     protected void populateViewHolder(final note_view_holder viewHolder, notemodel model, int position) {
-
                         final String noteid = getRef(position).getKey();
                         Log.d("user",noteid);
                         notesdatabase.child(noteid).addValueEventListener(new ValueEventListener() {
@@ -152,16 +160,15 @@ public class notesactivity extends AppCompatActivity  {
 
                     }
                 };
-
-
                 mynoteslist.setAdapter(firebaseRecyclerAdapter);
             }
         });
 
-        th.start();
-
-
-
+        try {
+            th.start();
+        }catch (Exception e){
+            System.out.print(e);
+        }
     }
 
     private int dpToPx(int dp) {
